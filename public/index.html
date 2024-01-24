@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="second">second page</a><br>
+<a href="/third">thirddid page</a><br>
+<hr>
+This is the firstdid page<br>
+1. Click on Install Protocol.<br>
+2. Go to each of the other pages and create two credentials, one with the correct bookmark phrase and one without.<br>
+3. Come back to this page and you'll see a list of the DIDs with the correct phrase, but in the console there will be an error saying "Entry bookmark text does not match" for the ones with the incorrect phrase.
+<hr>
+<div>List of users that have a verified bookmark for this page:<br>
+    <p id="bookmarkInfo"></p>
+</div>
+<hr>
+<button id="installProt">Install protocol</button>
+<p id="protInfo"></p>
+<hr>
+<script>
+let installProtButton = document.getElementById('installProt')
+let protInfo = document.getElementById('protInfo')
+let bookmarkInfo = document.getElementById('bookmarkInfo');
 
+window.onload = () => {
+  fetch('/checkBookmarks')
+  .then(response => response.text())
+  .then(text => bookmarkInfo.innerHTML = text)
+}
+
+installProtButton.addEventListener('click', () => {
+  fetch('/installProt', {
+    method: 'POST',
+    body: JSON.stringify({})
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Handle the response from the server
+    protInfo.innerHTML = JSON.stringify(data)
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error(error);
+  });
+});
+
+
+  </script>
+  
+</body>
+</html>

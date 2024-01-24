@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <a href="/">home page</a><br>
+    <a href="/third">thirddid page</a><br>
+    <hr>
+    <h3>Create a VC and send it to firstdid's dwn</h3>
+    Enter the phrase "I am following firstdid" to create, sign and send your VC within a presentation. Then add another but use a different phrase. It will also create and write to firstdid but will be rejected when it is checked.
+    <input type="text" id="whatText"><br>
+    <button id="createBookmark">Create Bookmark</button>
+    <p id="vcwrote">
+    </p>
+    <script>
+        let createBookmark = document.getElementById('createBookmark');
+        let vcwrote = document.getElementById('vcwrote');
+
+        createBookmark.addEventListener('click', () => {
+            let whatText = document.getElementById('whatText');
+            let messagedata = {
+                whatText: whatText.value,
+                whichDid: "seconddid"
+            }
+            let messagedatajson = JSON.stringify(messagedata)
+            fetch('/createvc', {
+                method: 'POST',
+                body: messagedatajson,
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    vcwrote.innerHTML = JSON.stringify(data)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        });
+    </script>
+</body>
+
+</html>
